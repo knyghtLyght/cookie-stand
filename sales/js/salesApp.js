@@ -8,8 +8,7 @@ var startHour = 6;
 function cookiePerCustForcast (min, max, acpc) {
   var randomCustNum = Math.floor(Math.random() * ((max + 1) - min) + min);
   console.log('min: ' + min + ' max: ' + max + ' acpc: ' + acpc + ' rand: ' + randomCustNum);
-  var cookiesPurchasedGuess = randomCustNum * acpc;
-  return cookiesPurchasedGuess;
+  return randomCustNum * acpc;
 }
 // Builds hours array
 function dayLength (startHour, hoursOpen) {
@@ -35,22 +34,33 @@ function displayFormatter (hour, cookiesSold) {
   return hour + ': ' + Math.round(cookiesSold) + ' cookies sold.';
 }
 var firstAndPike = {
+  storeMinCust: 23,
+  storeMaxCust: 65,
+  storeACPC: 6.3,
+  totalArray: [],
   render: function() {
-    // Setup known store data
-    var storeMinCust = 23;
-    var storeMaxCust = 65;
-    var storeACPC = 6.3;
+    // Create hours array based on store hours
     var storeDayLength = dayLength(startHour, hoursOpen);
     // Access the ul from sales.html
     var ulEl = document.getElementById('firstAndPikeUl');
     for(var i = 0; i < storeDayLength.length; i++) {
+      // Make the calculation
+      var cookieCount =  cookiePerCustForcast(this.storeMinCust, this.storeMaxCust, this.storeACPC);
+      // Add the value to the totals array
+      this.totalArray.push(cookieCount);
       // Create list item
       var liEl = document.createElement('li');
       // Give it content
-      liEl.textContent = displayFormatter(storeDayLength[i], cookiePerCustForcast(storeMinCust, storeMaxCust, storeACPC));
+      liEl.textContent = displayFormatter(storeDayLength[i], cookieCount);
       // Appened to the ul
       ulEl.appendChild(liEl);
     }
+    var salesTotal = 0;
+    for(var j = 0; j < this.totalArray.length; j++) {
+      salesTotal += this.totalArray[j];
+    }
+    liEl.textContent = Math.floor(salesTotal) + ' total cookies sold.';
+    ulEl.appendChild(liEl);
   }
 };
 var seaTac = {
