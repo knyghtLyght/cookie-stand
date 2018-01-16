@@ -47,7 +47,6 @@ var firstAndPike = {
       // Create list item
       var liEl = document.createElement('li');
       // Give it content
-      console.log(i);
       liEl.textContent = displayFormatter(storeDayLength[i], cookiePerCustForcast(storeMinCust, storeMaxCust, storeACPC));
       // Appened to the ul
       ulEl.appendChild(liEl);
@@ -67,7 +66,6 @@ var seaTac = {
       // Create list item
       var liEl = document.createElement('li');
       // Give it content
-      console.log(i);
       liEl.textContent = displayFormatter(storeDayLength[i], cookiePerCustForcast(storeMinCust, storeMaxCust, storeACPC));
       // Appened to the ul
       ulEl.appendChild(liEl);
@@ -87,7 +85,6 @@ var seattleCenter = {
       // Create list item
       var liEl = document.createElement('li');
       // Give it content
-      console.log(i);
       liEl.textContent = displayFormatter(storeDayLength[i], cookiePerCustForcast(storeMinCust, storeMaxCust, storeACPC));
       // Appened to the ul
       ulEl.appendChild(liEl);
@@ -107,7 +104,6 @@ var capHill = {
       // Create list item
       var liEl = document.createElement('li');
       // Give it content
-      console.log(i);
       liEl.textContent = displayFormatter(storeDayLength[i], cookiePerCustForcast(storeMinCust, storeMaxCust, storeACPC));
       // Appened to the ul
       ulEl.appendChild(liEl);
