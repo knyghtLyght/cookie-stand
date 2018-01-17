@@ -3,14 +3,16 @@
 //Variable declaration
 var hoursOpen = 15;
 var startHour = 6;
+var dayLengthArray = [];
+var storeArray = [];
+var storeTable = document.getElementById('salesTable');
 
 // Calculates random cookie count given (minimum customers, maximum customers, and average cookie per customer)
 function cookiePerCustForcast (min, max, acpc) {
   var randomCustNum = Math.floor(Math.random() * ((max + 1) - min) + min);
-  console.log('min: ' + min + ' max: ' + max + ' acpc: ' + acpc + ' rand: ' + randomCustNum);
-  return randomCustNum * acpc;
+  return Math.floor(randomCustNum * acpc);
 }
-// Builds hours array
+// Builds hours array based on store hours.
 function dayLength (startHour, hoursOpen) {
   var hoursArray = [];
   for(var i = startHour; i < (hoursOpen + startHour); i++) {
@@ -24,126 +26,99 @@ function dayLength (startHour, hoursOpen) {
         hoursArray.push((i - 12) + 'pm');
       }
     }
-    console.log(hoursArray[i - startHour]);
-    console.log(hoursArray);
   }
   return hoursArray;
 }
-// Formats the li's for display
-function displayFormatter (hour, cookiesSold) {
-  return hour + ': ' + Math.round(cookiesSold) + ' cookies sold.';
+
+//Table header function
+function tableHeader (dayLengthArray) {
+  var trEl = document.createElement('tr');
+  // Align header
+  var thEl = document.createElement('th');
+  thEl.textContent = '';
+  trEl.appendChild(thEl);
+  for(var i = 0; i < dayLengthArray.length; i++) {
+    thEl = document.createElement('th');
+    thEl.textContent = dayLengthArray[i];
+    trEl.appendChild(thEl);
+  }
+  storeTable.appendChild(trEl);
 }
-var firstAndPike = {
-  storeMinCust: 23,
-  storeMaxCust: 65,
-  storeACPC: 6.3,
-  totalArray: [],
-  render: function() {
-    // Create hours array based on store hours
-    var storeDayLength = dayLength(startHour, hoursOpen);
-    // Access the ul from sales.html
-    var ulEl = document.getElementById('firstAndPikeUl');
-    for(var i = 0; i < storeDayLength.length; i++) {
-      // Make the calculation
-      var cookieCount =  cookiePerCustForcast(this.storeMinCust, this.storeMaxCust, this.storeACPC);
-      // Add the value to the totals array
-      this.totalArray.push(cookieCount);
-      // Create list item
-      var liEl = document.createElement('li');
-      // Give it content
-      liEl.textContent = displayFormatter(storeDayLength[i], cookieCount);
-      // Appened to the ul
-      ulEl.appendChild(liEl);
+//Table footer/totals row
+function tableFooter (storeArray, dayLengthArray) {
+  var hourTotal = 0;
+  var salesTotalArray = [];
+  var trEl = document.createElement('tr');
+  var tdEL = document.createElement('td');
+  tdEL.textContent = 'Totals: ';
+  trEl.appendChild(tdEL);
+  // Build the salesTotalArray
+  for(var i = 0; i < dayLengthArray.length; i++) {
+    for(var j = 0; j < storeArray.length; j++) {
+      hourTotal += storeArray[j].salesArray[i];
     }
-    var salesTotal = 0;
-    for(var j = 0; j < this.totalArray.length; j++) {
-      salesTotal += this.totalArray[j];
-    }
-    liEl.textContent = Math.floor(salesTotal) + ' total cookies sold.';
-    ulEl.appendChild(liEl);
+    salesTotalArray.push(hourTotal);
+    hourTotal = 0;
   }
-};
-var seaTac = {
-  render: function() {
-    // Setup known store data
-    var storeMinCust = 3;
-    var storeMaxCust = 24;
-    var storeACPC = 1.2;
-    var storeDayLength = dayLength(startHour, hoursOpen);
-    // Access the ul from sales.html
-    var ulEl = document.getElementById('seaTacUl');
-    for(var i = 0; i < storeDayLength.length; i++) {
-      // Create list item
-      var liEl = document.createElement('li');
-      // Give it content
-      liEl.textContent = displayFormatter(storeDayLength[i], cookiePerCustForcast(storeMinCust, storeMaxCust, storeACPC));
-      // Appened to the ul
-      ulEl.appendChild(liEl);
-    }
+  // Fill in the row
+  for(var k = 0; k < salesTotalArray.length; k++) {
+    tdEL = document.createElement('td');
+    tdEL.textContent = salesTotalArray[k];
+    trEl.appendChild(tdEL);
   }
-};
-var seattleCenter = {
-  render: function() {
-    // Setup known store data
-    var storeMinCust = 11;
-    var storeMaxCust = 38;
-    var storeACPC = 3.7;
-    var storeDayLength = dayLength(startHour, hoursOpen);
-    // Access the ul from sales.html
-    var ulEl = document.getElementById('seattleCenterUl');
-    for(var i = 0; i < storeDayLength.length; i++) {
-      // Create list item
-      var liEl = document.createElement('li');
-      // Give it content
-      liEl.textContent = displayFormatter(storeDayLength[i], cookiePerCustForcast(storeMinCust, storeMaxCust, storeACPC));
-      // Appened to the ul
-      ulEl.appendChild(liEl);
-    }
+  // Add it to the table
+  storeTable.appendChild(trEl);
+}
+
+function StoreObject (name, minCust, maxCust, acpc, dayLengthArray) {
+  // Assign properties
+  this.name = name;
+  this.minCust = minCust;
+  this.maxCust = maxCust;
+  this.acpc = acpc;
+  this.dayLengthArray = dayLengthArray;
+  this.salesArray = [];
+  // Create sales array
+  for(var i = 0; i < dayLengthArray.length; i++) {
+    this.salesArray.push(cookiePerCustForcast(this.minCust, this.maxCust, this.acpc));
   }
-};
-var capHill = {
-  render: function() {
-    // Setup known store data
-    var storeMinCust = 20;
-    var storeMaxCust = 38;
-    var storeACPC = 2.3;
-    var storeDayLength = dayLength(startHour, hoursOpen);
-    // Access the ul from sales.html
-    var ulEl = document.getElementById('capHillUl');
-    for(var i = 0; i < storeDayLength.length; i++) {
-      // Create list item
-      var liEl = document.createElement('li');
-      // Give it content
-      liEl.textContent = displayFormatter(storeDayLength[i], cookiePerCustForcast(storeMinCust, storeMaxCust, storeACPC));
-      // Appened to the ul
-      ulEl.appendChild(liEl);
-    }
+  // Store the object in the storesArray
+  storeArray.push(this);
+}
+
+StoreObject.prototype.render = function () {
+  // Create tr
+  var trEl = document.createElement('tr');
+  // Create td
+  var tdEL = document.createElement('td');
+  // Give it content
+  tdEL.textContent = this.name;
+  // Append it to the row
+  trEl.appendChild(tdEL);
+  // Repeat for sales array values
+  for(var i = 0; i < this.salesArray.length; i++) {
+    tdEL = document.createElement('td');
+    tdEL.textContent = this.salesArray[i];
+    trEl.appendChild(tdEL);
   }
-};
-var alkiBeach = {
-  render: function() {
-    // Setup known store data
-    var storeMinCust = 2;
-    var storeMaxCust = 16;
-    var storeACPC = 4.6;
-    var storeDayLength = dayLength(startHour, hoursOpen);
-    // Access the ul from sales.html
-    var ulEl = document.getElementById('alkiUl');
-    for(var i = 0; i < storeDayLength.length; i++) {
-      // Create list item
-      var liEl = document.createElement('li');
-      // Give it content
-      console.log(i);
-      liEl.textContent = displayFormatter(storeDayLength[i], cookiePerCustForcast(storeMinCust, storeMaxCust, storeACPC));
-      // Appened to the ul
-      ulEl.appendChild(liEl);
-    }
-  }
+  storeTable.appendChild(trEl);
 };
 
-//Call objects
-firstAndPike.render();
-seaTac.render();
-seattleCenter.render();
-capHill.render();
-alkiBeach.render();
+
+// Call setup functions
+dayLengthArray = dayLength(startHour, hoursOpen);
+// Create objects
+var FirstAndPike = new StoreObject('First and Pike', 23, 65, 6.3, dayLengthArray);
+var SeaTac = new StoreObject('SeaTac Airport', 3, 24, 1.2, dayLengthArray);
+var SeattleCenter = new StoreObject('Seattle Center', 11, 38, 3.7, dayLengthArray);
+var CapHill = new StoreObject('Capital hill', 20, 38, 2.3, dayLengthArray);
+var AlkiBeach = new StoreObject('Alki Beach', 2, 16, 4.6, dayLengthArray);
+
+// Populate the table
+tableHeader(dayLengthArray);
+FirstAndPike.render();
+SeaTac.render();
+SeattleCenter.render();
+CapHill.render();
+AlkiBeach.render();
+tableFooter(storeArray, dayLengthArray);
