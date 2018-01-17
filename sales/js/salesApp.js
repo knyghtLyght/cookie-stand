@@ -6,6 +6,7 @@ var startHour = 6;
 var dayLengthArray = [];
 var storeArray = [];
 var storeTable = document.getElementById('salesTable');
+var newStoreForm = document.getElementById('newStoreForm');
 
 // Builds hours array based on store hours.
 function dayLength (startHour, hoursOpen) {
@@ -74,6 +75,8 @@ function StoreObject (name, minCust, maxCust, acpc) {
   this.acpc = acpc;
   this.dayLengthArray = dayLengthArray;
   this.salesArray = [];
+  // Create the sales array
+  this.salesArraySetup();
   // Store the object in the storesArray
   storeArray.push(this);
 }
@@ -91,8 +94,6 @@ StoreObject.prototype.cookiePerCustForcast = function () {
 };
 
 StoreObject.prototype.render = function () {
-  // Create the sales array
-  this.salesArraySetup();
   // Create tr
   var trEl = document.createElement('tr');
   // Create td
@@ -113,18 +114,24 @@ StoreObject.prototype.render = function () {
 // Call setup functions
 dayLengthArray = dayLength(startHour, hoursOpen);
 // Create objects
-var FirstAndPike = new StoreObject('First and Pike', 23, 65, 6.3); //eslint-disable-line
-var SeaTac = new StoreObject('SeaTac Airport', 3, 24, 1.2); //eslint-disable-line
-var SeattleCenter = new StoreObject('Seattle Center', 11, 38, 3.7); //eslint-disable-line
-var CapHill = new StoreObject('Capital hill', 20, 38, 2.3); //eslint-disable-line
-var AlkiBeach = new StoreObject('Alki Beach', 2, 16, 4.6); //eslint-disable-line
+var firstAndPike = new StoreObject('First and Pike', 23, 65, 6.3); //eslint-disable-line
+var seaTac = new StoreObject('SeaTac Airport', 3, 24, 1.2); //eslint-disable-line
+var seattleCenter = new StoreObject('Seattle Center', 11, 38, 3.7); //eslint-disable-line
+var capHill = new StoreObject('Capital hill', 20, 38, 2.3); //eslint-disable-line
+var alkiBeach = new StoreObject('Alki Beach', 2, 16, 4.6); //eslint-disable-line
 
 // Add new Store
 function addNewStore(event) {
   event.preventDefault();
   console.log(event.target);
-
-
+  // Pull data from the form and assign to variables
+  var newStoreName = event.target.newStoreName.value;
+  var newMinCust = parseInt(event.target.newMinCust.value);
+  var newMaxCust = parseInt(event.target.newMaxCust.value);
+  var newACPC = parseFloat(event.target.newACPC.value);
+  // Create new object
+  new StoreObject(newStoreName, newMinCust, newMaxCust, newACPC);
+  // Redraw the table
   drawTable();
 }
 
@@ -141,6 +148,7 @@ function drawTable () {
 }
 
 // Event listiner
+newStoreForm.addEventListener('submit', addNewStore);
 
 // Make initail call
 drawTable();

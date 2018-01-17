@@ -22,6 +22,21 @@
 
             </table>
         </section>
+        <section class="formSection">
+            <fieldset>
+                <form id="newStoreForm">
+                    <label for="newStoreName"></label>
+                    <input name="newStoreName" type="text" placeholder="Store Name">
+                    <label for="newMinCust"></label>
+                    <input name="newMinCust" type="number" placeholder="Minimum Customers" min="0">
+                    <label for="newMaxCust"></label>
+                    <input name="newMaxCust" type="number" placeholder="Maximum Customers" min="0">
+                    <label for="newACPC"></label>
+                    <input name="newACPC" type="step" placeholder="Avg. Cookie Per Customer" step="0.1" min="0">
+                    <button id="addAStore">Add a Store</button>
+                </form>
+            </fieldset>
+        </section>
     </section>
     <script type="text/javascript" src="js/salesApp.js"></script>
 </body>
