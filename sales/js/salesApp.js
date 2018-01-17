@@ -7,11 +7,6 @@ var dayLengthArray = [];
 var storeArray = [];
 var storeTable = document.getElementById('salesTable');
 
-// Calculates random cookie count given (minimum customers, maximum customers, and average cookie per customer)
-function cookiePerCustForcast (min, max, acpc) {
-  var randomCustNum = Math.floor(Math.random() * ((max + 1) - min) + min);
-  return Math.floor(randomCustNum * acpc);
-}
 // Builds hours array based on store hours.
 function dayLength (startHour, hoursOpen) {
   var hoursArray = [];
@@ -37,6 +32,7 @@ function tableHeader (dayLengthArray) {
   var thEl = document.createElement('th');
   thEl.textContent = '';
   trEl.appendChild(thEl);
+  // Populate the actual column names
   for(var i = 0; i < dayLengthArray.length; i++) {
     thEl = document.createElement('th');
     thEl.textContent = dayLengthArray[i];
@@ -70,7 +66,7 @@ function tableFooter (storeArray, dayLengthArray) {
   storeTable.appendChild(trEl);
 }
 
-function StoreObject (name, minCust, maxCust, acpc, dayLengthArray) {
+function StoreObject (name, minCust, maxCust, acpc) {
   // Assign properties
   this.name = name;
   this.minCust = minCust;
@@ -79,12 +75,22 @@ function StoreObject (name, minCust, maxCust, acpc, dayLengthArray) {
   this.dayLengthArray = dayLengthArray;
   this.salesArray = [];
   // Create sales array
-  for(var i = 0; i < dayLengthArray.length; i++) {
-    this.salesArray.push(cookiePerCustForcast(this.minCust, this.maxCust, this.acpc));
-  }
+  this.salesArraySetup();
   // Store the object in the storesArray
   storeArray.push(this);
 }
+
+StoreObject.prototype.salesArraySetup = function () {
+  // Create sales array
+  for(var i = 0; i < dayLengthArray.length; i++) {
+    this.salesArray.push(this.cookiePerCustForcast());
+  }
+};
+
+StoreObject.prototype.cookiePerCustForcast = function () {
+  var randomCustNum = Math.floor(Math.random() * ((this.maxCust + 1) - this.minCust) + this.minCust);
+  return Math.floor(randomCustNum * this.acpc);
+};
 
 StoreObject.prototype.render = function () {
   // Create tr
@@ -108,17 +114,15 @@ StoreObject.prototype.render = function () {
 // Call setup functions
 dayLengthArray = dayLength(startHour, hoursOpen);
 // Create objects
-var FirstAndPike = new StoreObject('First and Pike', 23, 65, 6.3, dayLengthArray);
-var SeaTac = new StoreObject('SeaTac Airport', 3, 24, 1.2, dayLengthArray);
-var SeattleCenter = new StoreObject('Seattle Center', 11, 38, 3.7, dayLengthArray);
-var CapHill = new StoreObject('Capital hill', 20, 38, 2.3, dayLengthArray);
-var AlkiBeach = new StoreObject('Alki Beach', 2, 16, 4.6, dayLengthArray);
+var FirstAndPike = new StoreObject('First and Pike', 23, 65, 6.3);
+var SeaTac = new StoreObject('SeaTac Airport', 3, 24, 1.2);
+var SeattleCenter = new StoreObject('Seattle Center', 11, 38, 3.7);
+var CapHill = new StoreObject('Capital hill', 20, 38, 2.3);
+var AlkiBeach = new StoreObject('Alki Beach', 2, 16, 4.6);
 
 // Populate the table
 tableHeader(dayLengthArray);
-FirstAndPike.render();
-SeaTac.render();
-SeattleCenter.render();
-CapHill.render();
-AlkiBeach.render();
+for(var i = 0; i < storeArray.length; i++) {
+  storeArray[i].render();
+}
 tableFooter(storeArray, dayLengthArray);
