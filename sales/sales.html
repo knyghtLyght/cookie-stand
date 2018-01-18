@@ -8,10 +8,10 @@
 </head>
 <body>
     <nav class="salmonNav">
-        <ul class="navUl" id="navLogo"></ul>
-        <li id="navLogoLi">Logo</li>
-        <ul class="navUl" id="linkList"></ul>
-        <li id="navSalesLi">Sales</li>
+        <a class="active" href="../index.html">Home</a>
+        <a href="#news">News</a>
+        <a href="#contact">Contact</a>
+        <a href="#about">About</a>          
     </nav>
     <header class="salmonHead">
         <h1 class="bannerLogo">The Salmon Cookie Sales</h1>
@@ -25,14 +25,15 @@
         <section class="formSection">
             <fieldset>
                 <form id="newStoreForm">
+                    <legend>Create A New Store</legend>
                     <label for="newStoreName"></label>
-                    <input name="newStoreName" type="text" placeholder="Store Name">
+                    <input name="newStoreName" type="text" placeholder="Store Name" required>
                     <label for="newMinCust"></label>
-                    <input name="newMinCust" type="number" placeholder="Minimum Customers" min="0">
+                    <input name="newMinCust" type="number" placeholder="Minimum Customers" min="1" required>
                     <label for="newMaxCust"></label>
-                    <input name="newMaxCust" type="number" placeholder="Maximum Customers" min="0">
+                    <input name="newMaxCust" type="number" placeholder="Maximum Customers" min="1" required>
                     <label for="newACPC"></label>
-                    <input name="newACPC" type="step" placeholder="Avg. Cookie Per Customer" step="0.1" min="0">
+                    <input name="newACPC" type="number" placeholder="Avg. Cookie Per Customer" step="0.1" min="0.1" required>
                     <button id="addAStore">Add a Store</button>
                 </form>
             </fieldset>
