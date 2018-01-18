@@ -7,7 +7,6 @@ var startHour = 6;
 var dailyTotalArray = [];
 var storeTable = document.getElementById('salesTable');
 var newStoreForm = document.getElementById('newStoreForm');
-
 // Builds hours array based on store hours.
 function dayLength (startHour, hoursOpen) {
   var hoursArray = [];
@@ -25,7 +24,6 @@ function dayLength (startHour, hoursOpen) {
   }
   return hoursArray;
 }
-
 //Table header function
 function tableHeader (dayLengthArray) {
   var trEl = document.createElement('tr');
@@ -135,16 +133,16 @@ StoreObject.prototype.render = function () {
   // Add the row to the table
   storeTable.appendChild(trEl);
 };
-
+// Add up the daily totals to appeend to the end of the footer
 function allStoresDailyTotal () {
   //Sum up all the daily totals
   for (var i = 0; i < dailyTotalArray.length; i++) {
     var total = 0;
     total += dailyTotalArray[i];
+    console.log(total);
   }
   return total;
 }
-
 // Call setup functions
 StoreObject.hours = dayLength(startHour, hoursOpen);
 // Create objects
@@ -167,7 +165,6 @@ function addNewStore(event) {
   // Redraw the table
   drawTable();
 }
-
 // Populate the table
 function drawTable () {
   // Clear exixting table
@@ -179,9 +176,7 @@ function drawTable () {
   }
   tableFooter(StoreObject.storeArray, StoreObject.hours);
 }
-
 // Event listiner
 newStoreForm.addEventListener('submit', addNewStore);
-
 // Make initail call
 drawTable();
