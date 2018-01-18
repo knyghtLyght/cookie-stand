@@ -3,8 +3,8 @@
 //Variable declaration
 var hoursOpen = 15;
 var startHour = 6;
-var dayLengthArray = [];
-var storeArray = [];
+// Create the daily totals array
+var dailyTotalArray = [];
 var storeTable = document.getElementById('salesTable');
 var newStoreForm = document.getElementById('newStoreForm');
 
@@ -39,6 +39,11 @@ function tableHeader (dayLengthArray) {
     thEl.textContent = dayLengthArray[i];
     trEl.appendChild(thEl);
   }
+  // Name the totals column
+  thEl = document.createElement('th');
+  thEl.textContent = 'Sales Totals';
+  trEl.appendChild(thEl);
+  // Append the row to the table
   storeTable.appendChild(trEl);
 }
 //Table footer/totals row
@@ -63,6 +68,10 @@ function tableFooter (storeArray, dayLengthArray) {
     tdEL.textContent = salesTotalArray[k];
     trEl.appendChild(tdEL);
   }
+  // Add the daily totals row
+  tdEL = document.createElement('td');
+  tdEL.textContent = allStoresDailyTotal();
+  trEl.appendChild(tdEL);
   // Add it to the table
   storeTable.appendChild(trEl);
 }
@@ -73,26 +82,37 @@ function StoreObject (name, minCust, maxCust, acpc) {
   this.minCust = minCust;
   this.maxCust = maxCust;
   this.acpc = acpc;
-  this.dayLengthArray = dayLengthArray;
   this.salesArray = [];
+  this.dailyTotal = 0;
   // Create the sales array
   this.salesArraySetup();
   // Store the object in the storesArray
-  storeArray.push(this);
+  StoreObject.storeArray.push(this);
 }
-
+// Create the object array
+StoreObject.storeArray = [];
+// Create the array of hours the store is open
+StoreObject.hours = dayLength(startHour, hoursOpen);
+// Function that populates the salesArray with data based on object properties
 StoreObject.prototype.salesArraySetup = function () {
   // Create sales array
-  for(var i = 0; i < dayLengthArray.length; i++) {
-    this.salesArray.push(this.cookiePerCustForcast());
+  for(var i = 0; i < StoreObject.hours.length; i++) {
+    // Find the hours sales
+    var hourlySales = this.cookiePerCustForcast();
+    // Push the number to the sales array
+    this.salesArray.push(hourlySales);
+    // Store the hours sales in the total for the stores daily sale
+    this.dailyTotal += hourlySales;
+    // Push the daily total to a single array
+    dailyTotalArray.push(this.dailyTotal);
   }
 };
-
+// Function that cerates random data to populate the array with
 StoreObject.prototype.cookiePerCustForcast = function () {
   var randomCustNum = Math.floor(Math.random() * ((this.maxCust + 1) - this.minCust) + this.minCust);
   return Math.floor(randomCustNum * this.acpc);
 };
-
+// Function that renders the object data to the table
 StoreObject.prototype.render = function () {
   // Create tr
   var trEl = document.createElement('tr');
@@ -108,11 +128,25 @@ StoreObject.prototype.render = function () {
     tdEL.textContent = this.salesArray[i];
     trEl.appendChild(tdEL);
   }
+  // Add the daily totals cell
+  tdEL = document.createElement('td');
+  tdEL.textContent = this.dailyTotal;
+  trEl.appendChild(tdEL);
+  // Add the row to the table
   storeTable.appendChild(trEl);
 };
 
+function allStoresDailyTotal () {
+  //Sum up all the daily totals
+  for (var i = 0; i < dailyTotalArray.length; i++) {
+    var total = 0;
+    total += dailyTotalArray[i];
+  }
+  return total;
+}
+
 // Call setup functions
-dayLengthArray = dayLength(startHour, hoursOpen);
+StoreObject.hours = dayLength(startHour, hoursOpen);
 // Create objects
 var firstAndPike = new StoreObject('First and Pike', 23, 65, 6.3); //eslint-disable-line
 var seaTac = new StoreObject('SeaTac Airport', 3, 24, 1.2); //eslint-disable-line
@@ -123,7 +157,6 @@ var alkiBeach = new StoreObject('Alki Beach', 2, 16, 4.6); //eslint-disable-line
 // Add new Store
 function addNewStore(event) {
   event.preventDefault();
-  console.log(event.target);
   // Pull data from the form and assign to variables
   var newStoreName = event.target.newStoreName.value;
   var newMinCust = parseInt(event.target.newMinCust.value);
@@ -140,11 +173,11 @@ function drawTable () {
   // Clear exixting table
   storeTable.innerHTML = '';
   // Fill table
-  tableHeader(dayLengthArray);
-  for(var i = 0; i < storeArray.length; i++) {
-    storeArray[i].render();
+  tableHeader(StoreObject.hours);
+  for(var i = 0; i < StoreObject.storeArray.length; i++) {
+    StoreObject.storeArray[i].render();
   }
-  tableFooter(storeArray, dayLengthArray);
+  tableFooter(StoreObject.storeArray, StoreObject.hours);
 }
 
 // Event listiner
