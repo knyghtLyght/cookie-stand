@@ -3,8 +3,6 @@
 //Variable declaration
 var hoursOpen = 15;
 var startHour = 6;
-// Create the daily totals array
-var dailyTotalArray = [];
 var storeTable = document.getElementById('salesTable');
 var newStoreForm = document.getElementById('newStoreForm');
 
@@ -49,6 +47,7 @@ function tableHeader (dayLengthArray) {
 //Table footer/totals row
 function tableFooter (storeArray, dayLengthArray) {
   var hourTotal = 0;
+  var dailyTotal = 0;
   var salesTotalArray = [];
   var trEl = document.createElement('tr');
   var tdEL = document.createElement('td');
@@ -60,6 +59,7 @@ function tableFooter (storeArray, dayLengthArray) {
       hourTotal += storeArray[j].salesArray[i];
     }
     salesTotalArray.push(hourTotal);
+    dailyTotal += hourTotal;
     hourTotal = 0;
   }
   // Fill in the row
@@ -70,7 +70,7 @@ function tableFooter (storeArray, dayLengthArray) {
   }
   // Add the daily totals row
   tdEL = document.createElement('td');
-  tdEL.textContent = allStoresDailyTotal();
+  tdEL.textContent = dailyTotal;
   trEl.appendChild(tdEL);
   // Add it to the table
   storeTable.appendChild(trEl);
@@ -103,8 +103,6 @@ StoreObject.prototype.salesArraySetup = function () {
     this.salesArray.push(hourlySales);
     // Store the hours sales in the total for the stores daily sale
     this.dailyTotal += hourlySales;
-    // Push the daily total to a single array
-    dailyTotalArray.push(this.dailyTotal);
   }
 };
 // Function that cerates random data to populate the array with
@@ -135,15 +133,6 @@ StoreObject.prototype.render = function () {
   // Add the row to the table
   storeTable.appendChild(trEl);
 };
-
-function allStoresDailyTotal () {
-  //Sum up all the daily totals
-  for (var i = 0; i < dailyTotalArray.length; i++) {
-    var total = 0;
-    total += dailyTotalArray[i];
-  }
-  return total;
-}
 
 // Call setup functions
 StoreObject.hours = dayLength(startHour, hoursOpen);
