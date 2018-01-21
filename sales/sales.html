@@ -3,42 +3,42 @@
 <head>
     <meta charset="utf-8" />
     <title>Salmon Cookie Sales</title>
-    <!-- <link rel="stylesheet" type="text/css" href="../css/reset.css" /> -->
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
     <link rel="stylesheet" type="text/css" href="css/saleStyle.css" />
 </head>
 <body>
-    <nav class="salmonNav">
-        <a class="active" href="../index.html">Home</a>
-        <a href="#sales">Sales</a>
-        <a href="#contact">Contact</a>
-        <a href="#about">About</a>          
+  <header>
+    <nav>
+      <img src="../img/salmon.png" alt="logo">
+      <a href="../index.html">Home</a>
+      <a class="active" href="#sales">Sales</a>
+      <a href="#contact">Contact</a>
+      <a href="#about">About</a>
     </nav>
-    <header class="salmonHead">
-        <h1 class="bannerLogo">The Salmon Cookie Sales</h1>
-    </header>
-    <section class="content">
-        <section id="salesTableSection">
-            <table id="salesTable">
-
-            </table>
-        </section>
-        <section class="formSection">
-            <fieldset>
-                <form id="newStoreForm">
-                    <legend>Create A New Store</legend>
-                    <label for="newStoreName"></label>
-                    <input name="newStoreName" type="text" placeholder="Store Name" required>
-                    <label for="newMinCust"></label>
-                    <input class="custInput" name="newMinCust" type="number" placeholder="Min Customers" min="1" required>
-                    <label for="newMaxCust"></label>
-                    <input class="custInput" name="newMaxCust" type="number" placeholder="Max Customers" min="1" required>
-                    <label for="newACPC"></label>
-                    <input class="custInput" name="newACPC" type="number" placeholder="ACPC" step="0.1" min="0.1" required>
-                    <button id="addAStore">Add a Store</button>
-                </form>
-            </fieldset>
-        </section>
+  </header>
+  <main>
+    <section>
+      <h1>The Salmon Cookie Sales</h1>
+      <table id="salesTable"></table>
     </section>
+    <div class="formSection">
+      <fieldset>
+        <form id="newStoreForm">
+          <legend>Create A New Store</legend>
+          <label for="newStoreName"></label>
+          <input name="newStoreName" type="text" placeholder="Store Name" required>
+          <label for="newMinCust"></label>
+          <input name="newMinCust" type="number" placeholder="Minimum Customers" min="1" required>
+          <label for="newMaxCust"></label>
+          <input name="newMaxCust" type="number" placeholder="Maximum Customers" min="1" required>
+          <label for="newACPC"></label>
+          <input name="newACPC" type="number" placeholder="Avg. Cookie Per Customer" step="0.1" min="0.1" required>
+          <button id="addAStore">Add a Store</button>
+        </form>
+      </fieldset>
+    </div>
+  </main>
+  <footer></footer>
     <script type="text/javascript" src="js/salesApp.js"></script>
-</body>
+  </body>
 </html>

@@ -3,3 +3,36 @@ Fresh #4abdac
 Vermillion #fc4a1a
 Sunshine #f7b733
 Clean #dfdce3 */
+
+body {
+  background-color: #dfdce3;
+}
+
+header {
+  float: left;
+  height: 100px;
+  width: 100%;
+  background-color: #4abdac;
+  color: #f7b733;
+  text-shadow: 1px 1px 2px black;
+}
+
+nav {
+  width: 960px;
+  height: 70px;
+  margin: auto;
+  margin-top: 15px;
+}
+
+nav img {
+  height: 70px;
+  float: left;
+  background-color: #dfdce3;
+  border: 1px solid #f7b733;
+}
+
+nav a {
+  float: left;
+  padding: 26px;
+  font-size: 18px;
+}
