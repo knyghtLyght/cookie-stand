@@ -3,3 +3,84 @@ Fresh #4abdac
 Vermillion #fc4a1a
 Sunshine #f7b733
 Clean #dfdce3 */
+
+body {
+  background-color: #dfdce3;
+  margin: 100px 0;
+}
+
+header {
+  position: fixed;
+  top: 0px;
+  height: 100px;
+  width: 100%;
+  background-color: #4abdac;
+  color: #f7b733;
+  text-shadow: 1px 1px 2px black;
+}
+
+nav {
+  width: 960px;
+  height: 70px;
+  margin: auto;
+  margin-top: 15px;
+}
+
+nav img {
+  height: 70px;
+  float: left;
+  background-color: #dfdce3;
+  border: 1px solid #f7b733;
+}
+
+nav a {
+  float: left;
+  padding: 26px;
+  font-size: 18px;
+}
+
+main {
+  width: 960px;
+  margin: auto;
+}
+
+article {
+  width: 100%;
+  height: 325px;
+  margin: 15px 0;
+  padding-top: 10px;
+  background-color: #4abdac;
+  color: #f7b733;
+  text-shadow: 1px 1px 2px black;
+}
+
+article h3 {
+  float: left;
+  height: 25px;
+  width: 100%;
+  text-align: center;
+  font-size: 160%;
+}
+
+ul {
+  float: left;
+  width: fit-content;
+  margin: 30px;
+}
+
+article p {
+  float: left;
+  margin: 30px;
+}
+
+article img {
+  float: right;
+}
+
+footer {
+  position: fixed;
+  bottom: 0px;
+  height: 100px;
+  width: 100%;
+  background-color: #4abdac;
+}
